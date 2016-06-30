@@ -1,0 +1,8 @@
+{
+  "root":{
+    "url":"[/]",
+    "controller":"Root",
+    "action":"index",
+    "method":"get"
+  }
+}

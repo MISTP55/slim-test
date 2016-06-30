@@ -1,0 +1,8 @@
+{
+  "books":{
+    "url":"[/]",
+    "controller":"Book",
+    "action":"index",
+    "method":"get"
+  }
+}
