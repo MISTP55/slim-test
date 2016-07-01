@@ -1,0 +1,8 @@
+{
+  "user_toto":{
+    "url":"[/]",
+    "controller":"UserProfile",
+    "action":"indexToto",
+    "method":"get"
+  }
+}

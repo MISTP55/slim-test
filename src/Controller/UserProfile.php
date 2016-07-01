@@ -16,4 +16,7 @@ class UserProfile extends BaseController{
     public function index(){
         return $this->response->write("Bonjour {$this->args['username']} !");
     }
+    public function indexToto(){
+        return $this->response->write("Bonjour toto {$this->args['username']} !");
+    }
 }

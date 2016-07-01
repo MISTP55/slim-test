@@ -49,7 +49,7 @@ class RouteParser{
 
     /**
      * Parse l'arborescence contenue dans $this->routes_root_path et construit les routes à partir des fichiers JSON
-     * @param string $path
+     * @param null $path string
      * @return array
      */
     private function parseDirectory($path = null){
