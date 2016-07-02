@@ -14,6 +14,8 @@ class Root extends BaseController{
     }
     
     public function index(){
-        return $this->response->write("Hello World!");
+        $my_form = new \ViewHelper\Form('post');
+
+        return $this->view->render($this->response, 'home.html');
     }
 }

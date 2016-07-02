@@ -27,16 +27,31 @@ class RouteParser{
     private $routes = array();
 
     /**
-     * @var string Chemin de l'élément actuellement traité
+     * @var string Chemin de l'élément actuellement traité.
      */
     private $current_route_path = '';
 
     /**
      * RouteParser constructor.
-     * @param $routes_root_path
+     * @param $routes_root_path Dossier contenant les routes.
      */
     public function __construct($routes_root_path){
         $this->routes_root_path = $routes_root_path;
+    }
+
+    /**
+     * Génère les routes dans l'objet d'application.
+     * @param \Slim\App $app
+     */
+    public function generateRoutes(\Slim\App $app){
+        foreach($this->getRoutes() as $route_name => $route){
+            $app->map([$route['method']], $route['url'], function (\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response, $args) use ($route_name, $route, $app) {
+                $controller = '\\Controller\\'.$route['controller'];
+                $controller = new $controller($request, $response, $app, $args);
+
+                return $controller->$route['action']();
+            })->setName($route_name);
+        }
     }
 
     /**
@@ -48,7 +63,7 @@ class RouteParser{
     }
 
     /**
-     * Parse l'arborescence contenue dans $this->routes_root_path et construit les routes à partir des fichiers JSON
+     * Parse l'arborescence contenue dans $this->routes_root_path et construit les routes à partir des fichiers JSON.
      * @param string $path
      * @return array
      */
@@ -74,14 +89,14 @@ class RouteParser{
             if(is_dir($item_path)){
                 array_merge($this->routes, $this->parseDirectory($item_path));
             }
-            elseif(is_file($item_path) and preg_match("/.json$/", $item_path)){
+            elseif(is_file($item_path) and preg_match('/.json$/', $item_path)){
                 foreach(json_decode(file_get_contents($item_path), true) as $route_name => $route){
                     // Traitement spéciale pour la route "root".
-                    if(basename($item_path, ".json") == 'root'){
+                    if(basename($item_path, '.json') == 'root'){
                         $route['url'] = '[/]';
                     }
                     else{
-                        // Nettoyage de la route pour obtenir un pattern utilisable par Slim
+                        // Nettoyage de la route pour obtenir un pattern utilisable par Slim.
                         $route['url'] = str_replace('/'.$this->routes_root_path, '', '/'.str_replace('.json', '', str_replace(DIRECTORY_SEPARATOR, '/', $this->current_route_path.$route['url'])));
                     }
 

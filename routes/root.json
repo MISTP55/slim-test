@@ -1,6 +1,6 @@
 {
   "root":{
-    "url":"",
+    "url":null,
     "controller":"Root",
     "action":"index",
     "method":"get"
